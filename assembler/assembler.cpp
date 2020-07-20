@@ -6,7 +6,6 @@
 
 using namespace std;
 
-addr_t current_addr = 0;
 map<string, addr_t> declarations;
 ofstream out;
 
@@ -60,7 +59,6 @@ void doBranch(bool indirect, unsigned short addr) {
 	char opcode = indirect ? BIT_INDIRECT : 0;
 	out.write(&opcode, 1);
 	out.write((char*)&addr, 2);
-	current_addr += 3;
 }
 
 void doNand(addr_t orig, bool isItself, addr_t dest, bool isByte, unsigned char bit, bool io, bool id) {
@@ -83,11 +81,8 @@ void doNand(addr_t orig, bool isItself, addr_t dest, bool isByte, unsigned char 
 
 	out.write(&opcode, 1);
 	out.write((char*)&orig, 2);
-	current_addr += 3;
-	if(!isItself) {
+	if(!isItself)
 		out.write((char*)&dest, 2);
-		++current_addr;
-	}
 }
 
 addr_t getDeclaration(char* str) {
@@ -102,15 +97,11 @@ addr_t getDeclaration(char* str) {
 void insertRawData(list<data_t>* raw) {
 	for(auto const& x : *raw)
 		out.write((char*)&x, 1);
-
-	current_addr += raw->size();
 	delete raw;
 }
 
 void insertRawAddr(list<addr_t>* raw) {
 	for(auto const& x : *raw)
 		out.write((char*)&x, 2);
-
-	current_addr += raw->size();
 	delete raw;
 }
