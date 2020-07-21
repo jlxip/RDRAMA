@@ -18,6 +18,7 @@ extern int yylineno;
 %token sep
 %token comma
 %token colon
+%token plus
 
 %token br
 %token ibr
@@ -94,15 +95,18 @@ data:		dec { ; }
 addr:		dec { ; }
 	|	hex { ; }
 	|	id { ; }
+	|	dec plus addr { ; }
+	|	hex plus addr { ; }
+	|	id plus addr { ; }
 	;
 
 
 datalist:		data { increment(sizeof(data_t)); }
-		|	data comma datalist { ; }
+		|	data comma datalist { increment(sizeof(data_t)); }
 		;
 
 addrlist:		addr { increment(sizeof(addr_t)); }
-		|	addr comma addrlist { ; }
+		|	addr comma addrlist { increment(sizeof(addr_t)); }
 		;
 
 %%

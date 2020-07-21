@@ -38,11 +38,13 @@ int yylex();
 
 [0-9]+			{ yylval._addr = atoi(yytext); return dec; }
 "0x"[0-9a-fA-F]+	{ yylval._addr = stoul(yytext, nullptr, 16); return hex; }
-[a-zA-Z][a-zA-Z0-9]*	{ yylval._id = strdup(yytext); return id; }
+[a-zA-Z][a-zA-Z0-9_]*	{ yylval._id = strdup(yytext); return id; }
 
 [ \t]+			{ return sep; }
 ","[ ]*		{ return comma; }
 ":"[ ]*		{ return colon; }
+[ ]*"+"[ ]*		{ return plus; }
+\n	 		{ ++yylineno; }
 
 .			{ yyerror(string("Unexpected character: ")+yytext); }
 %%

@@ -40,6 +40,8 @@ thing: nand 0xFFFD
 next: nand thing
 ```
 
+A declaration behaves like an address, and addresses can be added. For instance, `string_addr+1` will work.
+
 ## Literals
 RDRAMA supports literal insertion. That is, raw bytes. There are two pseudoinstructions for this: `rawd` (raw data, bytes) and `rawa` (raw address).
 ```asm

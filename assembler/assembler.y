@@ -23,6 +23,7 @@ int yylex();
 %token sep
 %token comma
 %token colon
+%token plus
 
 %token br
 %token ibr
@@ -98,6 +99,9 @@ data:		dec { $$ = $1; }
 addr:		dec { $$ = $1; }
 	|	hex { $$ = $1; }
 	|	id { $$ = getDeclaration($1); }
+	|	dec plus addr { $$ = $1 + $3; }
+	|	hex plus addr { $$ = $1 + $3; }
+	|	id plus addr { $$ = getDeclaration($1) + $3; }
 	;
 
 
